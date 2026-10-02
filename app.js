@@ -7,7 +7,7 @@
  * Si tu utilises un autre service que Formspree, ajoute son domaine dans connect-src de la CSP (index.html).
  */
 const FORM_ENDPOINT = '';
-const CONTACT_EMAIL = 'hello@weekly-surf.fr';
+const CONTACT_EMAIL = 'weekly.orga@gmail.com';
 
 document.documentElement.classList.add('js');
 
