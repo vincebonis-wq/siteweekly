@@ -1,12 +1,13 @@
 'use strict';
 
 /* ================= CONFIGURATION =================
- * FORM_ENDPOINT : URL du service qui reçoit les demandes (ex. Formspree : https://formspree.io/f/abcdwxyz).
- *   - Rempli  -> la demande est envoyée directement, le visiteur voit une confirmation.
- *   - Vide    -> le formulaire ouvre la messagerie du visiteur avec un e-mail pré-rempli vers CONTACT_EMAIL.
- * Si tu utilises un autre service que Formspree, ajoute son domaine dans connect-src de la CSP (index.html).
+ * FORM_ENDPOINT : service FormSubmit (gratuit, sans compte) qui transfère chaque demande par e-mail à CONTACT_EMAIL.
+ *   La toute première demande déclenche un e-mail « Activate Form » à valider une seule fois.
+ *   Ensuite, FormSubmit fournit un alias aléatoire (ex. https://formsubmit.co/ajax/abc123...) :
+ *   le coller ici à la place de l'adresse permet de ne plus l'exposer dans le code.
+ *   Vide -> le formulaire ouvre la messagerie du visiteur avec un e-mail pré-rempli (secours).
  */
-const FORM_ENDPOINT = '';
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/weekly.orga@gmail.com';
 const CONTACT_EMAIL = 'weekly.orga@gmail.com';
 
 document.documentElement.classList.add('js');
@@ -181,6 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     data.consentement = 'oui';
     data._subject = 'Demande de devis Weekly · ' + data.bde;
+    data._template = 'table';
+    data._captcha = 'false';
+    data._replyto = data.email;
 
     if (!FORM_ENDPOINT) {
       const href = buildMailto(data);
@@ -204,6 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       clearTimeout(timer);
       if (!res.ok) throw new Error('HTTP ' + res.status);
+      const out = await res.json().catch(() => ({}));
+      if (String(out.success) !== 'true') throw new Error(out.message || 'Envoi refusé');
       lastSent = Date.now();
       form.reset();
       try { sessionStorage.removeItem(DRAFT_KEY); } catch (_) {}

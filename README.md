@@ -12,10 +12,11 @@ https://vincebonis-wq.github.io/siteweekly/
 | `img/` | Images optimisées en WebP |
 | `_headers` | En-têtes de sécurité si migration vers Netlify / Cloudflare Pages |
 
-## Brancher le formulaire
-Dans `app.js`, renseigner `FORM_ENDPOINT` (ex. `https://formspree.io/f/xxxx`).
-Sans endpoint, le formulaire ouvre un e-mail pré-rempli vers `CONTACT_EMAIL`.
-Autre service que Formspree : ajouter son domaine dans `connect-src` de la CSP (`index.html`).
+## Formulaire
+Les demandes sont envoyées par FormSubmit (gratuit, sans compte) à weekly.orga@gmail.com.
+1. La toute première demande déclenche un e-mail « Activate Form » : cliquer une fois sur le bouton.
+2. Optionnel : remplacer l'adresse dans `FORM_ENDPOINT` (`app.js`) par l'alias aléatoire fourni par FormSubmit.
+En cas d'échec, le visiteur se voit proposer un e-mail pré-rempli.
 
 ## Mettre à jour le site
 Pousser sur la branche `gh-pages` : GitHub Pages republie automatiquement.
