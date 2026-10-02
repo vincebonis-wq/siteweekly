@@ -3,353 +3,195 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io mailto:; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="description" content="Weekly organise des weekends surf & kitesurf clé en main pour les BDE : sessions encadrées, transport, hébergement et soirées sur la Côte Atlantique.">
-<meta property="og:title" content="Weekly — weekends surf & kitesurf pour BDE">
-<meta property="og:description" content="Juin · Juillet · Côte Atlantique. On organise tout, toi tu profites.">
-<meta name="theme-color" content="#0B2E3C">
-<!--CONTENT-START-->
-<title>Weekly</title>
+<title>Weekly · Weekend surf &amp; planche à voile clé en main pour ton BDE</title>
+<meta name="description" content="Weekly organise des weekends surf &amp; planche à voile clé en main pour les BDE : bus privatisé, sessions encadrées, soirées et couchers de soleil sur la Côte Atlantique, en juin et juillet.">
+<link rel="canonical" href="https://vincebonis-wq.github.io/siteweekly/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Weekly · Le weekend surf clé en main pour ton BDE">
+<meta property="og:description" content="Vagues, vent, transport, soirées, coucher de soleil sur la plage. Toi, tu profites.">
+<meta property="og:url" content="https://vincebonis-wq.github.io/siteweekly/">
+<meta property="og:image" content="https://vincebonis-wq.github.io/siteweekly/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2b1238">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>
-/* Layout: hero coucher de soleil sur l'océan, puis sections alternées écume / océan, texte aligné à gauche sur une grille large. */
-:root{
-  --ocean:#0B2E3C;      /* fond profond */
-  --ocean-2:#12414F;
-  --foam:#EEF5F4;       /* écume, fond clair */
-  --ink:#0A1F28;        /* texte */
-  --muted:#4F6670;
-  --wax:#F2C230;        /* jaune wax, accent unique */
-  --line:#CFDDDC;
-  --on-ocean:#E6F1F0;
-  --on-ocean-muted:#9DB8BC;
-  --ok:#2F8F6B;
-  --err:#C2412D;
-  --f-display:"Archivo","Arial Narrow",Impact,sans-serif;
-  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
-  --gutter:clamp(16px,4vw,48px);
-  --max:1180px;
-  color-scheme:light;
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-body{margin:0;background:var(--foam);color:var(--ink);font:400 1.0625rem/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img,svg,canvas{max-width:100%;display:block}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--wax);outline-offset:3px;border-radius:4px}
-.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
-h1,h2,h3{font-family:var(--f-display);font-stretch:118%;line-height:.95;letter-spacing:-.01em;text-wrap:balance;margin:0}
-h2{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:850;text-transform:uppercase}
-h3{font-size:1.35rem;font-weight:750;font-stretch:110%}
-p{margin:0}
-.eyebrow{font:500 .78rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.btn{display:inline-flex;align-items:center;gap:.6em;padding:1rem 1.5rem;border-radius:999px;font:700 1rem/1 var(--f-display);font-stretch:112%;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .2s ease,background .2s ease,color .2s ease}
-.btn:hover{transform:translateY(-2px)}
-.btn-wax{background:var(--wax);color:var(--ocean)}
-.btn-ghost{border-color:currentColor;color:var(--on-ocean);background:transparent}
-.btn-ghost:hover{background:var(--on-ocean);color:var(--ocean)}
-
-/* NAV */
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(11,46,60,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--on-ocean);border-bottom:1px solid rgba(230,241,240,.08)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:64px}
-.logo{display:flex;align-items:center;gap:.55rem;font:900 1.15rem/1 var(--f-display);font-stretch:125%;text-transform:uppercase;text-decoration:none;letter-spacing:.02em}
-.logo svg{width:28px;height:28px}
-.nav ul{display:flex;gap:1.6rem;list-style:none;margin:0;padding:0;font-size:.95rem}
-.nav ul a{text-decoration:none;opacity:.8}
-.nav ul a:hover{opacity:1}
-.nav .btn{padding:.7rem 1.1rem;font-size:.85rem}
-@media (max-width:820px){.nav ul{display:none}}
-
-/* HERO */
-.hero{position:relative;background:var(--ocean);color:var(--on-ocean);overflow:hidden;isolation:isolate}
-.hero canvas{position:absolute;inset:auto 0 0 0;width:100%;height:58%;z-index:-1}
-.hero .wrap{display:grid;grid-template-columns:1.35fr .9fr;gap:clamp(2rem,5vw,4rem);align-items:end;padding-block:clamp(3.5rem,9vw,7rem) clamp(5rem,12vw,9rem)}
-.hero h1{font-size:clamp(3.2rem,10.5vw,8.6rem);font-weight:900;text-transform:uppercase;line-height:.86}
-.hero h1 em{font-style:normal;color:var(--wax);display:block}
-.hero .lead{max-width:34ch;margin-top:1.6rem;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--on-ocean-muted)}
-.hero .ctas{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
-.hero .eyebrow{color:var(--wax);margin-bottom:1.4rem}
-@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
-
-/* Bandeau défilant */
-.ticker{background:var(--wax);color:var(--ocean);overflow:hidden;white-space:nowrap;font:800 1rem/1 var(--f-display);font-stretch:125%;text-transform:uppercase;padding-block:.9rem}
-.ticker div{display:inline-block;animation:scroll 32s linear infinite}
-.ticker span{margin-inline:1.4rem}
-@keyframes scroll{to{transform:translateX(-50%)}}
-
-section{padding-block:clamp(4rem,10vw,7.5rem)}
-.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;margin-bottom:clamp(2.5rem,6vw,4rem)}
-.sec-head p{color:var(--muted);max-width:46ch;justify-self:end}
-.sec-head .eyebrow{margin-bottom:1rem}
-@media (max-width:760px){.sec-head{grid-template-columns:1fr}.sec-head p{justify-self:start}}
-
-/* Programme : timeline */
-.prog{background:var(--ocean);color:var(--on-ocean)}
-.prog .eyebrow{color:var(--wax)}
-.prog .sec-head p{color:var(--on-ocean-muted)}
-.days{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(230,241,240,.18)}
-.day{padding:1.8rem 1.6rem 2rem 0;border-right:1px solid rgba(230,241,240,.18);min-width:0}
-.day + .day{padding-left:1.6rem}
-.day:last-child{border-right:0}
-.day h3{font-size:2rem;text-transform:uppercase;font-stretch:125%;margin-bottom:1.4rem}
-.day h3 span{display:block;font:500 .75rem var(--f-mono);letter-spacing:.12em;color:var(--wax);margin-bottom:.5rem}
-.day ol{list-style:none;margin:0;padding:0;display:grid;gap:1rem}
-.day li{display:grid;grid-template-columns:3.6rem 1fr;gap:.8rem;font-size:.98rem}
-.day time{font:500 .85rem/1.6 var(--f-mono);color:var(--on-ocean-muted);font-variant-numeric:tabular-nums}
-@media (max-width:860px){.days{grid-template-columns:1fr}.day,.day + .day{padding:1.6rem 0;border-right:0;border-bottom:1px solid rgba(230,241,240,.18)}}
-
-/* Formulaire */
-.book{background:var(--ocean);color:var(--on-ocean)}
-.book .eyebrow{color:var(--wax)}
-.book-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,6vw,5rem);align-items:start}
-.book-grid > div:first-child p{color:var(--on-ocean-muted);margin-top:1.4rem;max-width:40ch}
-.book-steps{list-style:none;padding:0;margin:2rem 0 0;display:grid;gap:1rem;counter-reset:s}
-.book-steps li{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;align-items:baseline;color:var(--on-ocean-muted);counter-increment:s}
-.book-steps li::before{content:counter(s,decimal-leading-zero);font:500 .85rem var(--f-mono);color:var(--wax)}
-form{background:var(--foam);color:var(--ink);border-radius:22px;padding:clamp(1.4rem,4vw,2.4rem);display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1rem;min-width:0}
-.field{display:grid;gap:.4rem;min-width:0}
-.field.full{grid-column:1/-1}
-label{font:500 .78rem/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-label .req{color:var(--err)}
-input,select,textarea{width:100%;font:400 1rem/1.4 var(--f-body);color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:.85rem 1rem;transition:border-color .2s,box-shadow .2s}
-textarea{min-height:110px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ocean);box-shadow:0 0 0 4px rgba(242,194,48,.45)}
-.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--err)}
-.err{font-size:.82rem;color:var(--err);min-height:0}
-.check{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:.7rem;align-items:start;font-size:.9rem;color:var(--muted)}
-.check input{width:20px;height:20px;margin-top:.15rem;accent-color:var(--ocean)}
-.skip{position:absolute;left:1rem;top:-4rem;z-index:50;background:var(--wax);color:var(--ocean);padding:.7rem 1rem;border-radius:8px;font-weight:600}
-.skip:focus{top:1rem}
-.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
-form .btn{grid-column:1/-1;justify-content:center;background:var(--ocean);color:var(--on-ocean);padding:1.15rem}
-form .btn:hover{background:var(--ink)}
-form .btn[disabled]{opacity:.6;cursor:progress;transform:none}
-.status{grid-column:1/-1;border-radius:12px;padding:1rem 1.1rem;font-size:.95rem}
-.status.ok{background:#E2F2EA;color:#1D5E45;border:1px solid #B9DFCC}
-.status.ko{background:#FBE8E4;color:#8A2D1F;border:1px solid #F0C3B9}
-@media (max-width:900px){.book-grid{grid-template-columns:1fr}}
-@media (max-width:560px){form{grid-template-columns:1fr}}
-
-/* Footer */
-footer{background:var(--ink);color:var(--on-ocean-muted);padding-block:3.5rem 2.5rem;font-size:.92rem}
-footer .big{font:900 clamp(3rem,13vw,10rem)/.85 var(--f-display);font-stretch:125%;text-transform:uppercase;color:var(--ocean-2);letter-spacing:-.02em;margin-bottom:2.5rem;overflow-wrap:anywhere}
-footer .cols{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem}
-footer a{color:var(--on-ocean);text-decoration:none}
-footer a:hover{color:var(--wax)}
-footer nav{display:flex;flex-wrap:wrap;gap:1.4rem}
-
-/* Hero : coucher de soleil */
-.hero h1{font-size:clamp(2.5rem,7.2vw,6.2rem);max-width:15ch}
-.hero h1 em{font-size:.62em;margin-top:.25em;line-height:1}
-.hero{background:linear-gradient(180deg,#0B2E3C 0%,#1C4A57 46%,#C9785A 78%,#F2B45A 100%)}
-.hero canvas{height:46%}
-.hero .wrap{grid-template-columns:1fr;padding-block:clamp(4rem,10vw,8rem) clamp(9rem,20vw,15rem)}
-.hero .lead{color:var(--on-ocean);opacity:.85;max-width:52ch}
-.sun{position:absolute;left:62%;bottom:20%;width:clamp(120px,22vw,300px);aspect-ratio:1;max-width:100%;border-radius:50%;background:radial-gradient(circle,#FFE29A 0%,#F2C230 55%,rgba(242,194,48,0) 72%);z-index:-2;animation:set 14s ease-in-out infinite alternate}
-@media (max-width:700px){.sun{left:auto;right:-12%;bottom:40%;opacity:.8}}
-@keyframes set{to{transform:translateY(18%)}}
-.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.6rem;list-style:none;padding:0}
-.tags li{font:500 .8rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;padding:.55rem .85rem;border-radius:999px;border:1px solid rgba(230,241,240,.35)}
-.scroll{position:absolute;left:50%;bottom:1.4rem;transform:translateX(-50%);font:500 .7rem var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ocean);text-decoration:none;display:grid;justify-items:center;gap:.4rem}
-.scroll::after{content:"";width:1px;height:28px;background:currentColor;animation:drip 1.8s ease-in-out infinite}
-@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-
-/* Démarque : 4 piliers */
-.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.pillars article{background:var(--foam);padding:1.8rem 1.6rem;display:grid;gap:.7rem;align-content:start}
-.pillars svg{width:36px;height:36px;color:var(--ocean)}
-.pillars p{color:var(--muted);font-size:.97rem}
-@media (max-width:980px){.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:540px){.pillars{grid-template-columns:1fr}}
-.day p{color:var(--on-ocean-muted)}
-.day h3 span{font-variant-numeric:tabular-nums}
-
-/* Fondateurs */
-.founders{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(2rem,6vw,5rem);align-items:center}
-.duo-art{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#F2B45A 0%,#C9785A 45%,#1C4A57 46%,#0B2E3C 100%)}
-.duo-art svg{position:absolute;inset:0;width:100%;height:100%}
-.duo-art figcaption{position:absolute;left:1.2rem;bottom:1.1rem;font:500 .75rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--on-ocean)}
-.founders .copy{display:grid;gap:1.2rem;min-width:0}
-.founders .copy p{color:var(--muted);max-width:56ch}
-.founders .tags li{border-color:var(--ink);color:var(--ink)}
-@media (max-width:860px){.founders{grid-template-columns:1fr}.duo-art{aspect-ratio:16/11}}
-.contact-mail{display:inline-flex;margin-top:1.6rem;font:500 1rem var(--f-mono);color:var(--wax);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:.15rem;overflow-wrap:anywhere}
-.opt{text-transform:none;letter-spacing:0;color:var(--muted);opacity:.8}
-</style>
-<!--HEAD-END-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Barlow:wght@400;500;600;700&amp;family=Kaushan+Script&amp;display=swap">
+<link rel="preload" as="image" href="img/hero.webp" type="image/webp">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
 </head>
 <body>
-<!--BODY-START-->
-<a class="skip" href="#contact">Aller au formulaire de devis</a>
-<nav class="nav" aria-label="Navigation principale">
-  <div class="wrap">
-    <a class="logo" href="#top" aria-label="Weekly, accueil">
-      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#F2C230"/><path d="M4 19c3-4 6-4 8-1s5 3 8 0 6-3 8 1" stroke="#0B2E3C" stroke-width="2.6" stroke-linecap="round"/></svg>
-      Weekly
-    </a>
-    <ul>
-      <li><a href="#demarque">Notre démarque</a></li>
-      <li><a href="#weekend">Un weekend type</a></li>
-      <li><a href="#fondateurs">Les fondateurs</a></li>
+<a class="skip" href="#devis">Aller au formulaire de devis</a>
+
+<!-- Barre compacte qui apparaît au scroll -->
+<div class="topbar" id="topbar" aria-hidden="true">
+  <div class="in">
+    <a class="logo" href="#top" tabindex="-1">Weekly</a>
+    <ul class="nav-links">
+      <li><a href="#concept" tabindex="-1">Le concept</a></li>
+      <li><a href="#weekend" tabindex="-1">Le weekend</a></li>
+      <li><a href="#fondateurs" tabindex="-1">Les fondateurs</a></li>
     </ul>
-    <a class="btn btn-wax" href="#contact">Devis</a>
+    <a class="btn btn-coral btn-sm nav-cta" href="#devis" tabindex="-1">Demander un devis</a>
   </div>
-</nav>
+</div>
 
-<header class="hero" id="top">
-  <div class="sun" aria-hidden="true"></div>
-  <canvas id="waves" role="img" aria-label="Vagues au coucher du soleil"></canvas>
-  <div class="wrap">
-    <div>
-      <p class="eyebrow">Juin · Juillet · Côte Atlantique</p>
-      <h1>Le weekend surf &amp; kitesurf<em>clé en main pour ton BDE</em></h1>
-      <p class="lead">On organise tout : vagues, vent, transport, soirées, coucher de soleil sur la plage. Toi, tu profites. Tes étudiants en parleront pendant des années.</p>
-      <ul class="tags" aria-label="Activités"><li>Surf</li><li>Kitesurf</li><li>Sunset sessions</li></ul>
+<div class="page">
+  <header class="hero" id="top">
+    <div class="hero-img"><img src="img/hero.webp" alt="Surfeurs marchant sur la plage au coucher du soleil, une aile de kite dans le ciel" width="670" height="698" fetchpriority="high"></div>
+    <nav class="hero-nav" aria-label="Navigation principale">
+      <a class="logo" href="#top" aria-label="Weekly, retour en haut">Weekly</a>
+      <ul class="nav-links">
+        <li><a href="#concept">Le concept</a></li>
+        <li><a href="#weekend">Le weekend</a></li>
+        <li><a href="#fondateurs">Les fondateurs</a></li>
+      </ul>
+      <a class="btn btn-coral btn-sm nav-cta" href="#devis">Demander un devis
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <a href="#concept">Le concept</a>
+      <a href="#weekend">Le weekend</a>
+      <a href="#fondateurs">Les fondateurs</a>
+      <a href="#devis">Demander un devis</a>
+    </div>
+
+    <div class="hero-copy">
+      <h1 class="h-display">
+        <span class="l">Le weekend</span>
+        <span class="l">Surf &amp; planche à voile</span>
+        <span class="accent">Clé en main pour ton BDE</span>
+      </h1>
+      <p class="lead">On organise tout : vagues, vent, transport, soirées, coucher de soleil sur la plage. Toi, tu profites.</p>
+      <ul class="pills" aria-label="Activités">
+        <li class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 19c4 0 5-3 7-8s5-7 9-7c-2 1.5-3 4-1.5 6 1.2 1.6 3.5 1.6 5.5.5"/><path d="M9 11c2 1 4 4 4 8"/></svg>Surf</li>
+        <li class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="#ef4b3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 18H2a4 4 0 0 0 4 4h12a4 4 0 0 0 4-4Z"/><path d="M21 14 10 2 3 14h18Z"/><path d="M10 2v16"/></svg>Planche à voile</li>
+        <li class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="#ef4b3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>Sunset sessions</li>
+      </ul>
       <div class="ctas">
-        <a class="btn btn-wax" href="#contact">Demander un devis
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="#weekend">Découvrir un weekend</a>
+        <a class="btn btn-coral" href="#devis">Demander un devis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+        <a class="btn btn-outline" href="#weekend">Découvrir un weekend</a>
       </div>
+      <p class="where">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Juin — Juillet</span><span aria-hidden="true">·</span><span>Côte Atlantique</span>
+      </p>
     </div>
-  </div>
-  <a class="scroll" href="#demarque">Scroll</a>
-</header>
+  </header>
 
-<div class="ticker" aria-hidden="true"><div>
-  <span>Surf</span>✦<span>Kitesurf</span>✦<span>Sunset sessions</span>✦<span>Bus privatisé</span>✦<span>Moniteurs diplômés</span>✦<span>Clé en main</span>✦
-  <span>Surf</span>✦<span>Kitesurf</span>✦<span>Sunset sessions</span>✦<span>Bus privatisé</span>✦<span>Moniteurs diplômés</span>✦<span>Clé en main</span>✦
-</div></div>
+  <main>
+    <section class="concept center" id="concept" aria-labelledby="t-concept">
+      <h2 class="h-display h2" id="t-concept">Deux passionnés, zéro approximation</h2>
+      <svg class="swoosh" viewBox="0 0 110 10" aria-hidden="true"><path d="M3 7 Q55 1 107 5"/></svg>
+      <ul class="pillars">
+        <li class="pillar reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15.5 12.9 1.5 8.5a.5.5 0 0 1-.8.5l-3.6-2.7a1 1 0 0 0-1.2 0l-3.6 2.7a.5.5 0 0 1-.8-.5l1.5-8.5"/><circle cx="12" cy="8" r="6"/><path d="m9.5 8 1.7 1.7L14.5 6.5"/></svg></span>
+          <div><h3>Qualité</h3><p>Des partenaires locaux sélectionnés pour une expérience au top.</p></div>
+        </li>
+        <li class="pillar reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 10h8"/><path d="M8 18h8"/><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg></span>
+          <div><h3>Clé en main</h3><p>On s’occupe de tout, de A à Z, pour un weekend sans prise de tête.</p></div>
+        </li>
+        <li class="pillar reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 19c4 0 5-3 7-8s5-7 9-7c-2 1.5-3 4-1.5 6 1.2 1.6 3.5 1.6 5.5.5"/><path d="M9 11c2 1 4 4 4 8"/><path d="M13 19h9"/></svg></span>
+          <div><h3>Surf &amp; Planche à voile</h3><p>Des sessions adaptées à tous les niveaux, encadrées par des pros.</p></div>
+        </li>
+        <li class="pillar reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6 2 7"/><path d="M10 6h4"/><path d="m22 7-2-1"/><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M8 15h.01"/><path d="M16 15h.01"/><path d="M6 19v2"/><path d="M18 21v-2"/></svg></span>
+          <div><h3>Transport en bus privatisé</h3><p>Départ de ton école en bus, pour un weekend convivial et sans contrainte.</p></div>
+        </li>
+      </ul>
+    </section>
 
-<main>
-<section id="demarque">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><p class="eyebrow">Notre démarque</p><h2>Deux passionnés, zéro approximation.</h2></div>
-      <p>Weekly, c'est l'agence pensée par et pour des étudiants. Notre obsession : des weekends que tu n'as pas à gérer, mais que tu n'oublies jamais.</p>
-    </div>
-    <div class="pillars">
-      <article>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z"/></svg>
-        <h3>Qualité</h3><p>Spots reconnus, moniteurs surf &amp; kitesurf diplômés, hébergements soignés. Zéro compromis.</p>
-      </article>
-      <article>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9m-3 3 2 2m-4 0 2 2"/></svg>
-        <h3>Clé en main</h3><p>Une synthèse complète remise à ton BDE : programme, budget, logistique. Plus rien à gérer.</p>
-      </article>
-      <article>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4c8 0 14 4 16 10-5-3-10-3-16 0Z"/><path d="M4 14 10 21"/><path d="M2 21h20"/></svg>
-        <h3>Surf &amp; Kitesurf</h3><p>Deux disciplines, un même terrain de jeu. Chacun choisit sa session selon le vent et la houle.</p>
-      </article>
-      <article>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M3 11h18M7 20v-3m10 3v-3"/><circle cx="7.5" cy="14" r=".8"/><circle cx="16.5" cy="14" r=".8"/></svg>
-        <h3>Transport possible</h3><p>Bus privatisé au départ de ton école : on s'occupe aussi de t'amener jusqu'aux vagues.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="prog" id="weekend">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><p class="eyebrow">Un weekend type</p><h2>48h pensées minute par minute.</h2></div>
-    </div>
-    <div class="days">
-      <div class="day">
-        <h3><span>Vendredi · 16h</span>Départ &amp; arrivée</h3>
-        <p>Bus privatisé au départ de ton école. Arrivée en fin de journée, installation à l'hébergement, premier apéro face à l'océan.</p>
-      </div>
-      <div class="day">
-        <h3><span>Samedi · 9h — 23h</span>Surf, kite, plage, soirée</h3>
-        <p>Sessions surf &amp; kitesurf encadrées par des moniteurs diplômés (tous niveaux), déjeuner sur la plage, activités libres, dîner barbecue et soirée animée.</p>
-      </div>
-      <div class="day">
-        <h3><span>Dimanche · 10h — 17h</span>Dernière session &amp; retour</h3>
-        <p>Session matinale, brunch, temps libre, puis trajet retour. Tout le monde rentre lessivé, comblé, et déjà nostalgique.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="fondateurs">
-  <div class="wrap founders">
-    <figure class="duo-art" style="margin:0">
-      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Les fondateurs de Weekly, deux silhouettes avec leurs planches face au coucher de soleil">
-        <circle cx="200" cy="230" r="70" fill="#FFE29A" opacity=".9"/>
-        <path d="M0 232h400v268H0z" fill="#0B2E3C"/>
-        <path d="M0 250c40-10 80 10 120 0s80-10 120 0 80 10 160 0v30H0z" fill="#12414F"/>
-        <path d="M0 300c50-12 100 12 150 0s100-12 150 0 70 8 100 0v200H0z" fill="#1C4A57" opacity=".7"/>
-        <g fill="#0A1F28">
-          <circle cx="150" cy="300" r="13"/><path d="M137 316h26l6 70h-12l-4 70h-10l-2-60-2 60h-10l-4-70h-12z"/>
-          <rect x="112" y="290" width="12" height="150" rx="6" transform="rotate(-8 118 365)"/>
-          <circle cx="250" cy="296" r="13"/><path d="M237 312h26l6 72h-12l-4 72h-10l-2-60-2 60h-10l-4-72h-12z"/>
-          <rect x="278" y="282" width="13" height="160" rx="6.5" transform="rotate(6 284 362)"/>
-        </g>
-      </svg>
-      <figcaption>Les fondateurs de Weekly</figcaption>
-    </figure>
-    <div class="copy">
-      <p class="eyebrow">Les fondateurs</p>
-      <h2>Deux amis,<br>une obsession.</h2>
-      <p>Sportifs, surfeurs et animateurs depuis toujours, on a vécu nos propres weekends BDE : les bons, mais surtout les mauvais.</p>
-      <p>Weekly est né de cette frustration : pourquoi un weekend étudiant ne pourrait pas être à la fois cadré, qualitatif et complètement fou ? On a décidé de prouver que si.</p>
-      <ul class="tags" aria-label="Nos compétences"><li>Surf</li><li>Animation</li><li>Logistique</li><li>Bonne humeur</li></ul>
-    </div>
-  </div>
-</section>
-
-<section class="book" id="contact">
-  <div class="wrap book-grid">
-    <div>
-      <p class="eyebrow">Contact</p>
-      <h2>Prêt à embarquer ton BDE ?</h2>
-      <p>Remplis le formulaire, on te recontacte sous 48h avec une proposition personnalisée.</p>
-      <ol class="book-steps">
-        <li>Tu nous parles de ton BDE</li>
-        <li>On te recontacte sous 48h</li>
-        <li>Tu reçois ta proposition sur mesure</li>
+    <section class="weekend center" id="weekend" aria-labelledby="t-weekend">
+      <h2 class="h-display h2" id="t-weekend">48h pensées minute par minute</h2>
+      <svg class="swoosh" viewBox="0 0 110 10" aria-hidden="true"><path d="M3 7 Q55 1 107 5"/></svg>
+      <ol class="steps">
+        <li class="step reveal">
+          <div class="ph"><img src="img/t1.webp" alt="Étudiants montant dans le bus privatisé" width="204" height="107" loading="lazy" decoding="async"></div>
+          <span class="dot c1" aria-hidden="true"></span>
+          <div class="body"><span class="num" aria-hidden="true">01</span><div><h3>Vendredi 10h – 16h</h3><p>Départ en bus de ton école et installation sur place.</p></div></div>
+        </li>
+        <li class="step reveal">
+          <div class="ph"><img src="img/t2.webp" alt="Surfeurs entrant dans l'eau avec leurs planches" width="210" height="107" loading="lazy" decoding="async"></div>
+          <span class="dot c2" aria-hidden="true"></span>
+          <div class="body"><span class="num" aria-hidden="true">02</span><div><h3>Samedi 9h – 23h</h3><p>Sessions surf / planche à voile, plage, coucher de soleil et soirée.</p></div></div>
+        </li>
+        <li class="step reveal">
+          <div class="ph"><img src="img/t3.webp" alt="Groupe d'amis autour d'un feu sur la plage au coucher du soleil" width="800" height="450" loading="lazy" decoding="async"></div>
+          <span class="dot c3" aria-hidden="true"></span>
+          <div class="body"><span class="num" aria-hidden="true">03</span><div><h3>Dimanche 10h – 17h</h3><p>Dernière session le matin et retour en bus l’après-midi.</p></div></div>
+        </li>
       </ol>
-      <a class="contact-mail" href="mailto:hello@weekly-surf.fr">hello@weekly-surf.fr</a>
-    </div>
-    <form id="booking" novalidate autocomplete="on">
-      <div class="field"><label for="bde">Nom du BDE <span class="req">*</span></label><input id="bde" name="bde" type="text" placeholder="BDE Surf Lovers" required maxlength="80"><span class="err" aria-live="polite"></span></div>
-      <div class="field"><label for="ecole">École <span class="req">*</span></label><input id="ecole" name="ecole" type="text" placeholder="ESSEC, Centrale..." autocomplete="organization" required maxlength="80"><span class="err" aria-live="polite"></span></div>
-      <div class="field"><label for="nom">Ton nom <span class="req">*</span></label><input id="nom" name="nom" type="text" placeholder="Prénom Nom" autocomplete="name" required maxlength="80"><span class="err" aria-live="polite"></span></div>
-      <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" placeholder="toi@ecole.fr" autocomplete="email" required maxlength="120"><span class="err" aria-live="polite"></span></div>
-      <div class="field"><label for="tel">Téléphone <span class="opt">(optionnel)</span></label><input id="tel" name="telephone" type="tel" placeholder="06 12 34 56 78" autocomplete="tel" maxlength="20" inputmode="tel"><span class="err" aria-live="polite"></span></div>
-      <div class="field"><label for="nb">Nb d'étudiants estimé <span class="req">*</span></label><input id="nb" name="etudiants" type="number" placeholder="35" min="5" max="500" step="1" inputmode="numeric" required><span class="err" aria-live="polite"></span></div>
-      <div class="field"><label for="dates">Dates souhaitées <span class="opt">(optionnel)</span></label><input id="dates" name="dates" type="text" placeholder="Ex : 21-23 juin" maxlength="60"><span class="err" aria-live="polite"></span></div>
-      <div class="field"><label for="transport">Transport</label>
-        <select id="transport" name="transport"><option>À voir avec vous</option><option>Bus privatisé au départ de l'école</option><option>On vient par nos propres moyens</option></select><span class="err" aria-live="polite"></span></div>
-      <div class="field full"><label for="message">Message</label><textarea id="message" name="message" placeholder="Parle-nous de ton BDE, tes envies, tes contraintes..." maxlength="2000"></textarea><span class="err" aria-live="polite"></span></div>
-      <div class="hp" aria-hidden="true"><label for="website">Ne pas remplir</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-      <label class="check" for="rgpd"><input id="rgpd" name="consentement" type="checkbox" required><span>J'accepte que Weekly utilise ces informations uniquement pour me recontacter au sujet de ma demande de devis. <span class="req">*</span></span></label>
-      <span class="err" id="rgpd-err" aria-live="polite" style="grid-column:1/-1"></span>
-      <button class="btn" type="submit">Envoyer la demande</button>
-      <div class="status" id="status" role="status" hidden></div>
-    </form>
-  </div>
-</section>
-</main>
+      <div class="track" aria-hidden="true"><div class="dots"><span class="c1"></span><span class="c2"></span><span class="c3"></span></div></div>
+    </section>
 
-<footer>
-  <div class="wrap">
-    <p class="big" aria-hidden="true">Weekly</p>
-    <div class="cols">
-      <p>© 2026 — Weekends surf pour BDE</p>
-      <nav aria-label="Liens de pied de page">
-        <a href="#contact">Devis</a>
-        <a href="mailto:hello@weekly-surf.fr">hello@weekly-surf.fr</a>
-      </nav>
-    </div>
-  </div>
-</footer>
-<script src="app.js" defer></script>
-<!--BODY-END-->
+    <section class="founders" id="fondateurs" aria-labelledby="t-founders">
+      <figure class="founders-img"><img src="img/founders.webp" alt="Les deux fondateurs de Weekly assis sur une dune avec leurs planches" width="398" height="245" loading="lazy" decoding="async"></figure>
+      <div class="txt">
+        <div class="head">
+          <h2 class="h-display" id="t-founders">Deux amis,<br>une obsession</h2>
+          <svg class="swoosh" viewBox="0 0 110 10" aria-hidden="true"><path d="M3 7 Q55 1 107 5"/></svg>
+        </div>
+        <p>Weekly, c’est l’histoire de deux amis passionnés de glisse et de grands espaces, qui ont voulu créer des weekends inoubliables pour les BDE. Notre mission : vous faire vivre le meilleur de l’Atlantique, entre surf, planche à voile, nature, soirées et esprit étudiant, sans que vous ayez à vous soucier de quoi que ce soit.</p>
+        <ul class="tags" aria-label="Nos points forts">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 19c4 0 5-3 7-8s5-7 9-7c-2 1.5-3 4-1.5 6 1.2 1.6 3.5 1.6 5.5.5"/><path d="M9 11c2 1 4 4 4 8"/></svg>Surf</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.8"/><path d="M4 3h.01M22 8h.01M15 2h.01M22 20h.01"/><path d="m22 2-2.2.8a2.9 2.9 0 0 0-2 3.1c.1.9-.6 1.6-1.4 1.6H16c-.9 0-1.6.6-1.8 1.4L14 10"/><path d="M11 13c1.9 1.9 2.8 4.2 2 5s-3.1-.1-5-2-2.8-4.2-2-5 3.1.1 5 2Z"/></svg>Animation</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>Logistique</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>Bonne humeur</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="devis" id="devis" aria-labelledby="t-devis">
+      <div class="devis-bg"><img src="img/form.webp" alt="" width="596" height="490" loading="lazy" decoding="async"></div>
+      <div class="in">
+        <h2 class="h-display" id="t-devis">Prêt à embarquer ton BDE ?</h2>
+        <svg class="swoosh" viewBox="0 0 110 10" aria-hidden="true"><path d="M3 7 Q55 1 107 5"/></svg>
+        <p class="intro">Dis-nous en plus sur ton projet, on revient vers toi rapidement avec une proposition personnalisée.</p>
+
+        <form id="devis-form" novalidate autocomplete="on">
+          <div class="field"><label for="bde">Nom du BDE *</label><input id="bde" name="bde" required maxlength="80" placeholder="Ex : BDE Droit Bordeaux"><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="ecole">École *</label><input id="ecole" name="ecole" required maxlength="100" autocomplete="organization" placeholder="Ex : Université de Bordeaux"><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="nom">Nom *</label><input id="nom" name="nom" required maxlength="80" autocomplete="name" placeholder="Ton nom"><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" required maxlength="120" autocomplete="email" placeholder="ton.email@exemple.fr"><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="tel">Téléphone *</label><input id="tel" name="telephone" type="tel" required maxlength="20" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78"><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="nb">Nombre d'étudiants *</label><input id="nb" name="etudiants" type="number" required min="5" max="500" step="1" inputmode="numeric" placeholder="Ex : 42"><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="dates">Dates *</label>
+            <span class="with-ico"><input id="dates" name="dates" required maxlength="60" placeholder="Souhaitées pour le weekend"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+            <span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="transport">Transport *</label>
+            <select id="transport" name="transport" required><option value="">Besoin d'un bus privatisé ?</option><option>Oui</option><option>Non</option><option>À voir ensemble</option></select>
+            <span class="err" aria-live="polite"></span></div>
+          <div class="field full"><label for="message">Message</label><textarea id="message" name="message" rows="3" maxlength="2000" placeholder="Ton message (options, questions...)"></textarea><span class="err" aria-live="polite"></span></div>
+          <div class="hp" aria-hidden="true"><label for="website">Ne pas remplir</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="full">
+            <label class="consent" for="rgpd"><input id="rgpd" name="consentement" type="checkbox" required><span>J’accepte que Weekly utilise ces informations uniquement pour répondre à ma demande de devis (<a href="mentions-legales.html#donnees">données personnelles</a>). *</span></label>
+            <span class="err" id="rgpd-err" aria-live="polite"></span>
+          </div>
+          <div class="submit full">
+            <button class="btn btn-coral" type="submit">Demander un devis
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+            <small>Réponse sous 48h · Sans engagement</small>
+          </div>
+          <div class="status full" id="status" role="status" tabindex="-1" hidden></div>
+        </form>
+
+        <footer class="site-footer">
+          <span class="logo">Weekly</span>
+          <span class="links"><span>© 2026 Weekly</span><span aria-hidden="true">|</span><a href="mailto:hello@weekly-surf.fr">hello@weekly-surf.fr</a><span aria-hidden="true">|</span><a href="mentions-legales.html">Mentions légales</a></span>
+        </footer>
+      </div>
+    </section>
+  </main>
+</div>
 </body>
 </html>
