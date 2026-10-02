@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="description" content="Week-ends surf pour étudiants : 2 jours, 4 sessions encadrées, hébergement face à l'océan. Organisé par deux potes passionnés de glisse.">
+<meta property="og:title" content="Swell Club — week-ends surf étudiants">
+<meta property="og:description" content="2 jours, 4 sessions, une bande de potes. Réserve ta place.">
+<meta name="theme-color" content="#0B2E3C">
+<!--CONTENT-START-->
+<title>Swell Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: hero océan plein cadre façon bulletin de houle, puis sections alternées sable/écume sur une grille 12 colonnes. */
+:root{
+  --ocean:#0B2E3C;      /* fond profond */
+  --ocean-2:#12414F;
+  --foam:#EEF5F4;       /* écume, fond clair */
+  --ink:#0A1F28;        /* texte */
+  --muted:#4F6670;
+  --wax:#F2C230;        /* jaune wax, accent unique */
+  --line:#CFDDDC;
+  --on-ocean:#E6F1F0;
+  --on-ocean-muted:#9DB8BC;
+  --ok:#2F8F6B;
+  --err:#C2412D;
+  --f-display:"Archivo","Arial Narrow",Impact,sans-serif;
+  --f-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gutter:clamp(16px,4vw,48px);
+  --max:1180px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--foam);color:var(--ink);font:400 1.0625rem/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg,canvas{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--wax);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+h1,h2,h3{font-family:var(--f-display);font-stretch:118%;line-height:.95;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h2{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:850;text-transform:uppercase}
+h3{font-size:1.35rem;font-weight:750;font-stretch:110%}
+p{margin:0}
+.eyebrow{font:500 .78rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:.6em;padding:1rem 1.5rem;border-radius:999px;font:700 1rem/1 var(--f-display);font-stretch:112%;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .2s ease,background .2s ease,color .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-wax{background:var(--wax);color:var(--ocean)}
+.btn-ghost{border-color:currentColor;color:var(--on-ocean);background:transparent}
+.btn-ghost:hover{background:var(--on-ocean);color:var(--ocean)}
+
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(11,46,60,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--on-ocean);border-bottom:1px solid rgba(230,241,240,.08)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:64px}
+.logo{display:flex;align-items:center;gap:.55rem;font:900 1.15rem/1 var(--f-display);font-stretch:125%;text-transform:uppercase;text-decoration:none;letter-spacing:.02em}
+.logo svg{width:28px;height:28px}
+.nav ul{display:flex;gap:1.6rem;list-style:none;margin:0;padding:0;font-size:.95rem}
+.nav ul a{text-decoration:none;opacity:.8}
+.nav ul a:hover{opacity:1}
+.nav .btn{padding:.7rem 1.1rem;font-size:.85rem}
+@media (max-width:820px){.nav ul{display:none}}
+
+/* HERO */
+.hero{position:relative;background:var(--ocean);color:var(--on-ocean);overflow:hidden;isolation:isolate}
+.hero canvas{position:absolute;inset:auto 0 0 0;width:100%;height:58%;z-index:-1}
+.hero .wrap{display:grid;grid-template-columns:1.35fr .9fr;gap:clamp(2rem,5vw,4rem);align-items:end;padding-block:clamp(3.5rem,9vw,7rem) clamp(5rem,12vw,9rem)}
+.hero h1{font-size:clamp(3.2rem,10.5vw,8.6rem);font-weight:900;text-transform:uppercase;line-height:.86}
+.hero h1 em{font-style:normal;color:var(--wax);display:block}
+.hero .lead{max-width:34ch;margin-top:1.6rem;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--on-ocean-muted)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
+.hero .eyebrow{color:var(--wax);margin-bottom:1.4rem}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+
+/* Bulletin de houle */
+.bulletin{background:rgba(6,28,37,.72);border:1px solid rgba(230,241,240,.14);border-radius:18px;padding:1.4rem;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font-family:var(--f-mono);min-width:0}
+.bulletin header{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--on-ocean-muted);padding-bottom:.9rem;border-bottom:1px dashed rgba(230,241,240,.2)}
+.bulletin header b{color:var(--wax);font-weight:500}
+.bulletin dl{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0 0}
+.bulletin dt{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--on-ocean-muted)}
+.bulletin dd{margin:.25rem 0 0;font:800 1.7rem/1 var(--f-display);font-stretch:100%;font-variant-numeric:tabular-nums;color:var(--on-ocean)}
+.bulletin dd small{font:400 .75rem var(--f-mono);color:var(--on-ocean-muted);margin-left:.2rem}
+.bulletin .spot{margin-top:1.1rem;padding-top:.9rem;border-top:1px dashed rgba(230,241,240,.2);font-size:.8rem;color:var(--on-ocean-muted);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.bulletin .live{display:inline-flex;align-items:center;gap:.45rem}
+.bulletin .live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--wax);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* Bandeau défilant */
+.ticker{background:var(--wax);color:var(--ocean);overflow:hidden;white-space:nowrap;font:800 1rem/1 var(--f-display);font-stretch:125%;text-transform:uppercase;padding-block:.9rem}
+.ticker div{display:inline-block;animation:scroll 32s linear infinite}
+.ticker span{margin-inline:1.4rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+section{padding-block:clamp(4rem,10vw,7.5rem)}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;margin-bottom:clamp(2.5rem,6vw,4rem)}
+.sec-head p{color:var(--muted);max-width:46ch;justify-self:end}
+.sec-head .eyebrow{margin-bottom:1rem}
+@media (max-width:760px){.sec-head{grid-template-columns:1fr}.sec-head p{justify-self:start}}
+
+/* Qui on est */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}
+.person{display:grid;grid-template-columns:96px 1fr;gap:1.2rem;align-items:start;padding:1.6rem;border-top:2px solid var(--ink)}
+.avatar{width:96px;height:96px;border-radius:50%;background:var(--ocean);color:var(--wax);display:grid;place-items:center;font:900 2rem/1 var(--f-display);font-stretch:125%}
+.person h3{margin-bottom:.2rem}
+.person .role{font:500 .78rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.person p{color:var(--muted)}
+.manifest{margin-top:3rem;font:700 clamp(1.4rem,3vw,2.2rem)/1.2 var(--f-display);font-stretch:100%;max-width:28ch;text-wrap:balance}
+.manifest mark{background:linear-gradient(transparent 60%,var(--wax) 60%);color:inherit;padding-inline:.1em}
+@media (max-width:760px){.duo{grid-template-columns:1fr}.person{grid-template-columns:72px 1fr}.avatar{width:72px;height:72px;font-size:1.5rem}}
+
+/* Programme : timeline */
+.prog{background:var(--ocean);color:var(--on-ocean)}
+.prog .eyebrow{color:var(--wax)}
+.prog .sec-head p{color:var(--on-ocean-muted)}
+.days{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(230,241,240,.18)}
+.day{padding:1.8rem 1.6rem 2rem 0;border-right:1px solid rgba(230,241,240,.18);min-width:0}
+.day + .day{padding-left:1.6rem}
+.day:last-child{border-right:0}
+.day h3{font-size:2rem;text-transform:uppercase;font-stretch:125%;margin-bottom:1.4rem}
+.day h3 span{display:block;font:500 .75rem var(--f-mono);letter-spacing:.12em;color:var(--wax);margin-bottom:.5rem}
+.day ol{list-style:none;margin:0;padding:0;display:grid;gap:1rem}
+.day li{display:grid;grid-template-columns:3.6rem 1fr;gap:.8rem;font-size:.98rem}
+.day time{font:500 .85rem/1.6 var(--f-mono);color:var(--on-ocean-muted);font-variant-numeric:tabular-nums}
+@media (max-width:860px){.days{grid-template-columns:1fr}.day,.day + .day{padding:1.6rem 0;border-right:0;border-bottom:1px solid rgba(230,241,240,.18)}}
+
+/* Inclus */
+.incl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.incl div{background:var(--foam);padding:1.6rem;display:grid;gap:.6rem;align-content:start}
+.incl svg{width:34px;height:34px;color:var(--ocean)}
+.incl p{color:var(--muted);font-size:.95rem}
+@media (max-width:960px){.incl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.incl{grid-template-columns:1fr}}
+
+/* Dates & tarifs */
+.dates{background:#fff}
+.price-wrap{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;align-items:start}
+.sessions{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.sessions li{display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;padding:1.2rem 0;border-bottom:1px solid var(--line)}
+.sessions .d{font:850 1.6rem/1 var(--f-display);font-stretch:118%;text-transform:uppercase;min-width:7.5rem}
+.sessions .s{color:var(--muted);font-size:.95rem;min-width:0}
+.pill{font:500 .75rem/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:.5rem .75rem;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.pill.hot{background:var(--wax);border-color:var(--wax);color:var(--ocean)}
+.pill.full{color:var(--muted);text-decoration:line-through}
+.price-card{background:var(--ocean);color:var(--on-ocean);border-radius:22px;padding:2rem;position:relative;overflow:hidden}
+.price-card .amount{font:900 clamp(4rem,9vw,5.6rem)/1 var(--f-display);font-stretch:110%;color:var(--wax);font-variant-numeric:tabular-nums}
+.price-card .amount small{font:500 1rem var(--f-mono);color:var(--on-ocean-muted)}
+.price-card ul{list-style:none;padding:0;margin:1.4rem 0 1.8rem;display:grid;gap:.6rem}
+.price-card li{display:flex;gap:.7rem;align-items:flex-start}
+.price-card li::before{content:"";flex:none;width:.55rem;height:.55rem;margin-top:.55rem;border-radius:50%;background:var(--wax)}
+.price-card .note{font:400 .8rem/1.5 var(--f-mono);color:var(--on-ocean-muted);margin-top:1rem}
+@media (max-width:900px){.price-wrap{grid-template-columns:1fr}}
+@media (max-width:560px){.sessions li{grid-template-columns:1fr auto}.sessions .s{grid-column:1/-1;grid-row:2}}
+
+/* Niveaux */
+.levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem}
+.level{padding-top:1.2rem;border-top:2px solid var(--ink);display:grid;gap:.6rem;align-content:start}
+.level .bars{display:flex;gap:4px}
+.level .bars i{width:22px;height:6px;border-radius:3px;background:var(--line)}
+.level .bars i.on{background:var(--ocean)}
+.level p{color:var(--muted)}
+@media (max-width:760px){.levels{grid-template-columns:1fr}}
+
+/* FAQ */
+.faq{display:grid;gap:0;border-top:2px solid var(--ink);max-width:880px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:1.3rem 0;font:700 1.15rem/1.3 var(--f-display);font-stretch:105%}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 1.6rem/1 var(--f-mono);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 1.4rem;color:var(--muted);max-width:65ch}
+
+/* Formulaire */
+.book{background:var(--ocean);color:var(--on-ocean)}
+.book .eyebrow{color:var(--wax)}
+.book-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,6vw,5rem);align-items:start}
+.book-grid > div:first-child p{color:var(--on-ocean-muted);margin-top:1.4rem;max-width:40ch}
+.book-steps{list-style:none;padding:0;margin:2rem 0 0;display:grid;gap:1rem;counter-reset:s}
+.book-steps li{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;align-items:baseline;color:var(--on-ocean-muted);counter-increment:s}
+.book-steps li::before{content:counter(s,decimal-leading-zero);font:500 .85rem var(--f-mono);color:var(--wax)}
+form{background:var(--foam);color:var(--ink);border-radius:22px;padding:clamp(1.4rem,4vw,2.4rem);display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1rem;min-width:0}
+.field{display:grid;gap:.4rem;min-width:0}
+.field.full{grid-column:1/-1}
+label{font:500 .78rem/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+label .req{color:var(--err)}
+input,select,textarea{width:100%;font:400 1rem/1.4 var(--f-body);color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:.85rem 1rem;transition:border-color .2s,box-shadow .2s}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ocean);box-shadow:0 0 0 4px rgba(242,194,48,.45)}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--err)}
+.err{font-size:.82rem;color:var(--err);min-height:0}
+.check{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:.7rem;align-items:start;font-size:.9rem;color:var(--muted)}
+.check input{width:20px;height:20px;margin-top:.15rem;accent-color:var(--ocean)}
+.skip{position:absolute;left:1rem;top:-4rem;z-index:50;background:var(--wax);color:var(--ocean);padding:.7rem 1rem;border-radius:8px;font-weight:600}
+.skip:focus{top:1rem}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+form .btn{grid-column:1/-1;justify-content:center;background:var(--ocean);color:var(--on-ocean);padding:1.15rem}
+form .btn:hover{background:var(--ink)}
+form .btn[disabled]{opacity:.6;cursor:progress;transform:none}
+.status{grid-column:1/-1;border-radius:12px;padding:1rem 1.1rem;font-size:.95rem}
+.status.ok{background:#E2F2EA;color:#1D5E45;border:1px solid #B9DFCC}
+.status.ko{background:#FBE8E4;color:#8A2D1F;border:1px solid #F0C3B9}
+@media (max-width:900px){.book-grid{grid-template-columns:1fr}}
+@media (max-width:560px){form{grid-template-columns:1fr}}
+
+/* Footer */
+footer{background:var(--ink);color:var(--on-ocean-muted);padding-block:3.5rem 2.5rem;font-size:.92rem}
+footer .big{font:900 clamp(3rem,13vw,10rem)/.85 var(--f-display);font-stretch:125%;text-transform:uppercase;color:var(--ocean-2);letter-spacing:-.02em;margin-bottom:2.5rem;overflow-wrap:anywhere}
+footer .cols{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem}
+footer a{color:var(--on-ocean);text-decoration:none}
+footer a:hover{color:var(--wax)}
+footer nav{display:flex;flex-wrap:wrap;gap:1.4rem}
+</style>
+<!--HEAD-END-->
+</head>
+<body>
+<!--BODY-START-->
+<a class="skip" href="#reserver">Aller au formulaire de réservation</a>
+<nav class="nav" aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Swell Club, accueil">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#F2C230"/><path d="M4 19c3-4 6-4 8-1s5 3 8 0 6-3 8 1" stroke="#0B2E3C" stroke-width="2.6" stroke-linecap="round"/></svg>
+      Swell Club
+    </a>
+    <ul>
+      <li><a href="#nous">Qui on est</a></li>
+      <li><a href="#programme">Programme</a></li>
+      <li><a href="#dates">Dates &amp; prix</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn btn-wax" href="#reserver">Réserver</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="waves" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Week-ends surf · étudiants · 18–28 ans</p>
+      <h1>Deux jours.<em>Zéro partiel.</em></h1>
+      <p class="lead">On t'emmène surfer avec ta bande : sessions encadrées par des moniteurs diplômés, maison face à l'océan, repas et soirées compris. Tu viens avec ton sac, on s'occupe du reste.</p>
+      <div class="ctas">
+        <a class="btn btn-wax" href="#reserver">Je réserve ma place
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#programme">Voir le programme</a>
+      </div>
+    </div>
+    <aside class="bulletin" aria-label="Prochain départ">
+      <header><span>Prochain départ</span><b>Sam 17 → Dim 18 oct</b></header>
+      <dl>
+        <div><dt>Houle</dt><dd>1,2<small>m</small></dd></div>
+        <div><dt>Période</dt><dd>11<small>s</small></dd></div>
+        <div><dt>Eau</dt><dd>17<small>°C</small></dd></div>
+        <div><dt>Sessions</dt><dd>4<small>× 2h</small></dd></div>
+        <div><dt>Groupe</dt><dd>16<small>max</small></dd></div>
+        <div><dt>Places</dt><dd>5<small>restantes</small></dd></div>
+      </dl>
+      <div class="spot"><span class="live">Inscriptions ouvertes</span><span>Hossegor · Landes</span></div>
+    </aside>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div>
+  <span>Planche &amp; combi fournies</span>✦<span>Moniteurs diplômés d'État</span>✦<span>Tous niveaux</span>✦<span>Maison face à l'océan</span>✦<span>Covoit' organisé</span>✦
+  <span>Planche &amp; combi fournies</span>✦<span>Moniteurs diplômés d'État</span>✦<span>Tous niveaux</span>✦<span>Maison face à l'océan</span>✦<span>Covoit' organisé</span>✦
+</div></div>
+
+<main>
+<section id="nous">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Qui on est</p><h2>Deux potes,<br>une obsession.</h2></div>
+      <p>On a commencé par embarquer nos amis de promo chaque fois que la houle rentrait. Aujourd'hui, on organise ces week-ends pour tous les étudiants qui ont envie de se lever tôt pour la bonne raison.</p>
+    </div>
+    <div class="duo">
+      <article class="person">
+        <div class="avatar" aria-hidden="true">V</div>
+        <div>
+          <h3>Vincent</h3>
+          <p class="role">Co-fondateur · logistique &amp; vibes</p>
+          <p>Surfeur depuis l'adolescence, sportif touche-à-tout. Il trouve les spots, gère la maison et s'assure que personne ne rate le lever de soleil.</p>
+        </div>
+      </article>
+      <article class="person">
+        <div class="avatar" aria-hidden="true">M</div>
+        <div>
+          <h3>Maxime</h3>
+          <p class="role">Co-fondateur · eau &amp; sécurité</p>
+          <p>Passionné de glisse, toujours le premier à l'eau. Il fait le lien avec les moniteurs et adapte chaque session au niveau du groupe.</p>
+        </div>
+      </article>
+    </div>
+    <p class="manifest">Pas un camp, pas un club de vacances. <mark>Un week-end entre potes</mark>, qui se trouve être très bien organisé.</p>
+  </div>
+</section>
+
+<section class="prog" id="programme">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Le programme</p><h2>48 heures<br>bien remplies.</h2></div>
+      <p>Les horaires bougent avec les marées : on surfe quand l'océan est bon, pas quand le planning l'impose. Voici une journée type.</p>
+    </div>
+    <div class="days">
+      <div class="day">
+        <h3><span>J-0 · Vendredi</span>Arrivée</h3>
+        <ol>
+          <li><time>19:00</time><span>Départ en covoit' depuis la gare</span></li>
+          <li><time>21:30</time><span>Installation à la maison</span></li>
+          <li><time>22:00</time><span>Dîner, briefing sécurité et lecture des prévisions</span></li>
+        </ol>
+      </div>
+      <div class="day">
+        <h3><span>J-1 · Samedi</span>Full surf</h3>
+        <ol>
+          <li><time>08:30</time><span>Session 1 avec moniteur, marée montante</span></li>
+          <li><time>12:30</time><span>Brunch géant au retour de l'eau</span></li>
+          <li><time>16:00</time><span>Session 2 + analyse vidéo</span></li>
+          <li><time>20:00</time><span>Barbecue et soirée feu de camp</span></li>
+        </ol>
+      </div>
+      <div class="day">
+        <h3><span>J-2 · Dimanche</span>Dernières vagues</h3>
+        <ol>
+          <li><time>07:30</time><span>Dawn patrol (session 3) pour les motivés</span></li>
+          <li><time>11:00</time><span>Session 4, puis photos du groupe</span></li>
+          <li><time>15:00</time><span>Déjeuner et retour</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Tout est compris</p><h2>Tu ramènes<br>juste ta serviette.</h2></div>
+      <p>Un prix, aucune mauvaise surprise sur place. Seuls tes extras perso restent à ta charge.</p>
+    </div>
+    <div class="incl">
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c3 4 4 9 3 20H9C8 11 9 6 12 2Z"/><path d="M12 6v12"/></svg>
+        <h3>Matériel</h3><p>Planche adaptée à ton niveau et combinaison 4/3 mm.</p>
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <h3>Encadrement</h3><p>4 sessions de 2 h avec des moniteurs diplômés d'État.</p>
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>
+        <h3>Hébergement</h3><p>2 nuits en maison partagée, à 5 minutes à pied de la plage.</p>
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3v8a3 3 0 0 0 6 0V3M7 3v18M17 21V3c-2 1-3 4-3 8h3"/></svg>
+        <h3>Repas</h3><p>Petits-déj, brunchs, dîners et le barbecue du samedi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dates" id="dates">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Dates &amp; tarifs</p><h2>Choisis<br>ta marée.</h2></div>
+      <p>16 places par week-end, pas une de plus : c'est ce qui garde l'ambiance et la sécurité au niveau.</p>
+    </div>
+    <div class="price-wrap">
+      <ul class="sessions">
+        <li><span class="d">17–18 oct</span><span class="s">Hossegor · grandes marées d'automne</span><span class="pill hot">5 places</span></li>
+        <li><span class="d">7–8 nov</span><span class="s">Hossegor · spécial débutants</span><span class="pill">11 places</span></li>
+        <li><span class="d">21–22 nov</span><span class="s">Seignosse · niveau intermédiaire</span><span class="pill">14 places</span></li>
+        <li><span class="d">26–27 sept</span><span class="s">Hossegor · rentrée</span><span class="pill full">Complet</span></li>
+      </ul>
+      <div class="price-card">
+        <p class="eyebrow" style="color:var(--on-ocean-muted)">Tarif étudiant</p>
+        <p class="amount">189€<small> / pers.</small></p>
+        <ul>
+          <li>4 sessions encadrées + matériel</li>
+          <li>2 nuits et tous les repas</li>
+          <li>Covoiturage organisé depuis la gare</li>
+          <li>Assurance activité incluse</li>
+        </ul>
+        <a class="btn btn-wax" href="#reserver">Réserver ce week-end</a>
+        <p class="note">Acompte de 60 € à la réservation. Tarif groupe dès 6 personnes : -10 %.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Ton niveau</p><h2>Jamais surfé ?<br>Parfait.</h2></div>
+      <p>Les groupes sont répartis par niveau dès la première session. Chacun progresse à son rythme.</p>
+    </div>
+    <div class="levels">
+      <div class="level"><div class="bars" aria-hidden="true"><i class="on"></i><i></i><i></i></div><h3>Première vague</h3><p>Sécurité, lecture de l'océan, take-off dans la mousse. Objectif : ta première vague debout.</p></div>
+      <div class="level"><div class="bars" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></div><h3>Je me lève</h3><p>Passage au line-up, choix des vagues, premiers virages sur l'épaule.</p></div>
+      <div class="level"><div class="bars" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></div><h3>Je ride</h3><p>Coaching vidéo, placement, manœuvres. Sessions free-surf sur les meilleurs créneaux.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Questions fréquentes</p><h2>Avant de<br>te jeter à l'eau.</h2></div>
+    </div>
+    <div class="faq">
+      <details><summary>Faut-il savoir nager ?</summary><p>Oui : tu dois être capable de nager 50 m et de t'immerger sans appréhension. Le reste, on te l'apprend.</p></details>
+      <details><summary>Et si les conditions sont mauvaises ?</summary><p>On choisit le spot le plus adapté chaque jour. Si l'océan est vraiment impraticable, on remplace la session par une activité (skate, yoga, rando côtière) ou on te rembourse la session.</p></details>
+      <details><summary>Je peux venir seul·e ?</summary><p>Bien sûr. La moitié des participants viennent seuls et repartent avec une bande de potes. Les chambres sont réparties à l'arrivée.</p></details>
+      <details><summary>Comment se passe le paiement ?</summary><p>Après ton inscription, on te recontacte sous 48 h pour confirmer ta place. Un acompte de 60 € la bloque, le solde est réglé 10 jours avant le départ.</p></details>
+      <details><summary>Quelle est la politique d'annulation ?</summary><p>Annulation gratuite jusqu'à 15 jours avant le départ. Ensuite, l'acompte est conservé, sauf si tu trouves quelqu'un pour te remplacer.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="book" id="reserver">
+  <div class="wrap book-grid">
+    <div>
+      <p class="eyebrow">Réservation</p>
+      <h2>Ta place<br>t'attend.</h2>
+      <p>Remplis le formulaire, on te répond sous 48 h pour confirmer les détails et l'acompte. Aucun paiement n'est demandé ici.</p>
+      <ol class="book-steps">
+        <li>Tu envoies ta demande</li>
+        <li>On t'appelle ou on t'écrit pour valider</li>
+        <li>Tu verses l'acompte et ta place est bloquée</li>
+      </ol>
+    </div>
+    <form id="booking" novalidate autocomplete="on">
+      <div class="field"><label for="prenom">Prénom <span class="req">*</span></label><input id="prenom" name="prenom" type="text" autocomplete="given-name" required maxlength="50"><span class="err" aria-live="polite"></span></div>
+      <div class="field"><label for="nom">Nom <span class="req">*</span></label><input id="nom" name="nom" type="text" autocomplete="family-name" required maxlength="50"><span class="err" aria-live="polite"></span></div>
+      <div class="field"><label for="email">E-mail <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required maxlength="120"><span class="err" aria-live="polite"></span></div>
+      <div class="field"><label for="tel">Téléphone <span class="req">*</span></label><input id="tel" name="telephone" type="tel" autocomplete="tel" required maxlength="20" inputmode="tel"><span class="err" aria-live="polite"></span></div>
+      <div class="field"><label for="ecole">École / université</label><input id="ecole" name="ecole" type="text" maxlength="80"><span class="err" aria-live="polite"></span></div>
+      <div class="field"><label for="nb">Nombre de places <span class="req">*</span></label>
+        <select id="nb" name="places" required><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6 et + (tarif groupe)</option></select><span class="err" aria-live="polite"></span></div>
+      <div class="field"><label for="date">Week-end souhaité <span class="req">*</span></label>
+        <select id="date" name="weekend" required><option value="">Choisir…</option><option>17–18 oct · Hossegor</option><option>7–8 nov · Hossegor (débutants)</option><option>21–22 nov · Seignosse</option><option>Liste d'attente / autre date</option></select><span class="err" aria-live="polite"></span></div>
+      <div class="field"><label for="niveau">Ton niveau <span class="req">*</span></label>
+        <select id="niveau" name="niveau" required><option value="">Choisir…</option><option>Jamais surfé</option><option>Quelques sessions</option><option>Je me lève et je tourne</option><option>Confirmé</option></select><span class="err" aria-live="polite"></span></div>
+      <div class="field full"><label for="message">Un message ? (allergies, questions…)</label><textarea id="message" name="message" maxlength="1000"></textarea><span class="err" aria-live="polite"></span></div>
+      <div class="hp" aria-hidden="true"><label for="website">Ne pas remplir</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="check" for="rgpd"><input id="rgpd" name="consentement" type="checkbox" required><span>J'accepte que mes données soient utilisées uniquement pour traiter ma demande de réservation. Elles ne sont ni revendues ni partagées. <span class="req">*</span></span></label>
+      <span class="err" id="rgpd-err" aria-live="polite" style="grid-column:1/-1"></span>
+      <button class="btn" type="submit">Envoyer ma demande</button>
+      <div class="status" id="status" role="status" hidden></div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="big" aria-hidden="true">Swell Club</p>
+    <div class="cols">
+      <p>© 2026 Swell Club · Week-ends surf étudiants · Landes</p>
+      <nav aria-label="Liens de pied de page">
+        <a href="#reserver">Réserver</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="#top">Mentions légales</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="app.js" defer></script>
+<!--BODY-END-->
+</body>
+</html>
