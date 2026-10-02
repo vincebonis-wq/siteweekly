@@ -14,10 +14,10 @@ const FORM_ENDPOINT = '';
   const ctx = canvas.getContext('2d');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const layers = [
-    { amp: 18, len: 0.010, speed: 0.6, y: 0.30, color: 'rgba(18,65,79,0.55)' },
-    { amp: 24, len: 0.007, speed: 0.4, y: 0.48, color: 'rgba(22,82,98,0.55)' },
-    { amp: 30, len: 0.005, speed: 0.3, y: 0.66, color: 'rgba(26,96,112,0.6)' },
-    { amp: 14, len: 0.013, speed: 0.9, y: 0.82, color: 'rgba(242,194,48,0.18)' }
+    { amp: 10, len: 0.008, speed: 0.5, y: 0.34, color: 'rgba(28,74,87,0.95)' },
+    { amp: 16, len: 0.006, speed: 0.4, y: 0.50, color: 'rgba(18,65,79,0.95)' },
+    { amp: 22, len: 0.005, speed: 0.3, y: 0.68, color: 'rgba(11,46,60,0.97)' },
+    { amp: 8, len: 0.015, speed: 0.9, y: 0.40, color: 'rgba(255,226,154,0.16)' }
   ];
   let w = 0, h = 0, t = 0, raf = 0, visible = true;
 
@@ -33,7 +33,7 @@ const FORM_ENDPOINT = '';
     for (const l of layers) {
       ctx.beginPath();
       ctx.moveTo(0, h);
-      for (let x = 0; x <= w; x += 8) {
+      for (let x = 0; x <= w + 8; x += 8) {
         const y = l.y * h + Math.sin(x * l.len + t * l.speed) * l.amp + Math.sin(x * l.len * 2.3 + t * l.speed * 1.4) * l.amp * 0.35;
         ctx.lineTo(x, y);
       }
@@ -73,12 +73,12 @@ const FORM_ENDPOINT = '';
   let lastSubmit = 0;
 
   const rules = {
-    prenom: v => v.trim().length >= 2 || 'Indique ton prénom.',
-    nom: v => v.trim().length >= 2 || 'Indique ton nom.',
-    email: v => /^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$/i.test(v.trim()) || 'Cette adresse e-mail ne semble pas valide (ex. prenom@mail.com).',
-    telephone: v => /^\+?[0-9 .\-()]{8,20}$/.test(v.trim()) || 'Indique un numéro joignable (ex. 06 12 34 56 78).',
-    weekend: v => v !== '' || 'Choisis un week-end.',
-    niveau: v => v !== '' || 'Indique ton niveau, même approximatif.'
+    bde: v => v.trim().length >= 2 || 'Indique le nom de ton BDE.',
+    ecole: v => v.trim().length >= 2 || 'Indique ton école.',
+    nom: v => v.trim().length >= 3 || 'Indique ton prénom et ton nom.',
+    email: v => /^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$/i.test(v.trim()) || 'Cette adresse email ne semble pas valide (ex. toi@ecole.fr).',
+    telephone: v => v.trim() === '' || /^\+?[0-9 .\-()]{8,20}$/.test(v.trim()) || 'Ce numéro ne semble pas valide (ex. 06 12 34 56 78).',
+    etudiants: v => (/^\d+$/.test(v) && +v >= 5 && +v <= 500) || 'Indique un nombre d\'étudiants entre 5 et 500.'
   };
 
   function setError(input, msg) {
@@ -119,7 +119,7 @@ const FORM_ENDPOINT = '';
     }
     const consent = form.elements.consentement;
     const consentErr = document.getElementById('rgpd-err');
-    consentErr.textContent = consent.checked ? '' : 'Coche la case pour qu\'on puisse traiter ta demande.';
+    consentErr.textContent = consent.checked ? '' : 'Coche la case pour qu\'on puisse te recontacter.';
     if (!consent.checked) { ok = false; first = first || consent; }
     if (!ok) { first.focus(); return; }
 
@@ -136,7 +136,7 @@ const FORM_ENDPOINT = '';
     const data = {};
     for (const [k, v] of new FormData(form).entries()) {
       if (k === 'website') continue;
-      data[k] = String(v).trim().slice(0, 1000);
+      data[k] = String(v).trim().slice(0, 2000);
     }
 
     btn.disabled = true;
@@ -156,10 +156,10 @@ const FORM_ENDPOINT = '';
         await new Promise(r => setTimeout(r, 700)); // mode démo
       }
       lastSubmit = Date.now();
-      show('ok', 'C\'est reçu, ' + data.prenom + ' ! On te recontacte sous 48 h pour confirmer ta place (' + data.weekend + ').');
+      show('ok', 'Demande reçue pour ' + data.bde + ' ! On te recontacte sous 48h avec une proposition personnalisée.');
       form.reset();
     } catch (err) {
-      show('ko', 'L\'envoi n\'a pas abouti. Vérifie ta connexion et réessaie ; si ça bloque encore, écris-nous sur Instagram.');
+      show('ko', 'L\'envoi n\'a pas abouti. Vérifie ta connexion et réessaie ; si ça bloque encore, écris-nous à hello@weekly-surf.fr.');
     } finally {
       btn.disabled = false;
       btn.textContent = label;
