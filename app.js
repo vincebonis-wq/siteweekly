@@ -72,7 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
     email: v => /^[^\s@<>()]+@[^\s@<>()]+\.[a-z]{2,}$/i.test(v.trim()) || 'Adresse email invalide (ex. ton.email@exemple.fr).',
     telephone: v => /^\+?[0-9 .\-()]{8,20}$/.test(v.trim()) || 'Numéro invalide (ex. 06 12 34 56 78).',
     etudiants: v => (/^\d+$/.test(v) && +v >= 5 && +v <= 500) || 'Indique un nombre entre 5 et 500.',
-    dates: v => v.trim().length >= 3 || 'Indique tes dates souhaitées (ex. 20-22 juin).',
+    dates: v => {
+      if (!v) return 'Choisis au moins un weekend, ou « Autre ».';
+      if (v.endsWith('Autre')) return 'Précise tes dates ou disponibilités dans « Autre ».';
+      return true;
+    },
     transport: v => v !== '' || 'Dis-nous si tu as besoin du bus.'
   };
 
@@ -94,6 +98,94 @@ document.addEventListener('DOMContentLoaded', () => {
     return r === true;
   }
 
+  /* ---------- Sélecteur de weekends ---------- */
+  const MONTHS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+  const MONTH_NAMES = { 5: 'Juin', 6: 'Juillet' };
+  const dBtn = document.getElementById('dates-btn');
+  const dPanel = document.getElementById('dates-panel');
+  const dHidden = document.getElementById('dates');
+  const dSummary = document.getElementById('dates-summary');
+  const dOther = document.getElementById('dp-other');
+  const dOtherWrap = document.getElementById('dp-other-wrap');
+  const dOtherTxt = document.getElementById('dates-autre');
+
+  // Saison à venir : juin-juillet de cette année, ou de l'an prochain si la saison est passée.
+  const now = new Date();
+  const season = now.getMonth() > 6 ? now.getFullYear() + 1 : now.getFullYear();
+  document.getElementById('dp-year').textContent = season;
+  const label = (a, b) => a.getMonth() === b.getMonth()
+    ? a.getDate() + '–' + b.getDate() + ' ' + MONTHS[a.getMonth()]
+    : a.getDate() + ' ' + MONTHS[a.getMonth()] + ' – ' + b.getDate() + ' ' + MONTHS[b.getMonth()];
+  const monthsBox = document.getElementById('dp-months');
+  for (const m of [5, 6]) {
+    const block = document.createElement('div');
+    block.className = 'dp-month';
+    const h = document.createElement('h4');
+    h.textContent = MONTH_NAMES[m] + ' ' + season;
+    const chips = document.createElement('div');
+    chips.className = 'chips';
+    for (let d = new Date(season, m, 1); d.getMonth() === m; d.setDate(d.getDate() + 1)) {
+      if (d.getDay() !== 5) continue; // vendredi
+      const fri = new Date(d), sun = new Date(d);
+      sun.setDate(sun.getDate() + 2);
+      if (fri < now) continue;
+      const wrap = document.createElement('label');
+      wrap.className = 'chip';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'dp-we';
+      cb.value = label(fri, sun) + ' ' + season;
+      const txt = document.createElement('span');
+      txt.textContent = label(fri, sun);
+      wrap.append(cb, txt);
+      chips.append(wrap);
+    }
+    block.append(h, chips);
+    monthsBox.append(block);
+  }
+
+  function syncDates() {
+    const picked = [...dPanel.querySelectorAll('.dp-we:checked')].map(c => c.value);
+    const other = dOther.checked;
+    dOtherWrap.hidden = !other;
+    const parts = picked.slice();
+    if (other) parts.push('Autre' + (dOtherTxt.value.trim() ? ' : ' + dOtherTxt.value.trim() : ''));
+    dHidden.value = parts.join(' | ');
+    const n = picked.length;
+    let sum = '';
+    if (n === 1) sum = picked[0].replace(/ \d{4}$/, '');
+    else if (n > 1) sum = n + ' weekends choisis';
+    if (other) sum = sum ? sum + ' + autre' : 'Autre / flexibles';
+    dSummary.textContent = sum || 'Choisis tes weekends';
+    dSummary.classList.toggle('ph-txt', !sum);
+    if (dHidden.closest('.field').classList.contains('invalid')) check(dHidden);
+    saveDraft();
+  }
+  function openPanel(open) {
+    dPanel.hidden = !open;
+    dHidden.closest('.field').classList.toggle('open', open);
+    dBtn.setAttribute('aria-expanded', String(open));
+    if (open) (dPanel.querySelector('input') || dPanel).focus();
+  }
+  dBtn.addEventListener('click', () => openPanel(dPanel.hidden));
+  dPanel.addEventListener('change', e => {
+    syncDates();
+    if (e.target === dOther && dOther.checked) dOtherTxt.focus();
+  });
+  dOtherTxt.addEventListener('input', syncDates);
+  document.getElementById('dp-ok').addEventListener('click', () => { openPanel(false); check(dHidden); dBtn.focus(); });
+  document.getElementById('dp-clear').addEventListener('click', () => {
+    dPanel.querySelectorAll('input[type=checkbox]').forEach(c => { c.checked = false; });
+    dOtherTxt.value = '';
+    syncDates();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !dPanel.hidden) { openPanel(false); dBtn.focus(); }
+  });
+  document.addEventListener('click', e => {
+    if (!dPanel.hidden && !dPanel.contains(e.target) && !dBtn.contains(e.target)) openPanel(false);
+  });
+
   form.addEventListener('focusout', e => { if (e.target.name in rules && e.target.value) check(e.target); });
   form.addEventListener('input', e => {
     if (fieldOf(e.target)?.classList.contains('invalid')) check(e.target);
@@ -104,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function saveDraft() {
     try {
       const d = {};
-      for (const [k, v] of new FormData(form)) if (k !== 'website' && k !== 'consentement') d[k] = v;
+      for (const [k, v] of new FormData(form)) if (!['website', 'consentement', 'dates', 'dates_precisions'].includes(k)) d[k] = v;
       sessionStorage.setItem(DRAFT_KEY, JSON.stringify(d));
     } catch (_) { /* stockage indisponible */ }
   }
@@ -135,19 +227,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function buildMailto(d) {
     const lines = [
-      'Nom du BDE : ' + d.bde,
-      'École : ' + d.ecole,
-      'Nom : ' + d.nom,
-      'Email : ' + d.email,
-      'Téléphone : ' + d.telephone,
-      "Nombre d'étudiants : " + d.etudiants,
-      'Dates souhaitées : ' + d.dates,
-      'Bus privatisé : ' + d.transport,
+      'Bonjour l’équipe Weekly,',
       '',
-      d.message || ''
+      'Je souhaite obtenir un devis pour un weekend surf & planche à voile avec notre BDE. Voici les premières infos :',
+      '',
+      '— NOTRE BDE —',
+      '• Nom du BDE : ' + d.bde,
+      '• École : ' + d.ecole,
+      '• Nombre d’étudiants estimé : ' + d.etudiants,
+      '',
+      '— LE WEEKEND —',
+      '• Dates souhaitées : ' + (d.dates || '').split(' | ').join(', '),
+      '• Bus privatisé depuis l’école : ' + d.transport,
+      '',
+      '— MES COORDONNÉES —',
+      '• Nom : ' + d.nom,
+      '• Email : ' + d.email,
+      '• Téléphone : ' + d.telephone,
+      ''
     ];
+    if (d.message) lines.push('— PRÉCISIONS —', d.message, '');
+    lines.push('Pouvez-vous me faire une proposition (programme, budget, logistique) ? Je reste disponible pour en discuter par téléphone.', '', 'Merci d’avance et à bientôt,', d.nom, d.bde + ' · ' + d.ecole);
     return 'mailto:' + CONTACT_EMAIL +
-      '?subject=' + encodeURIComponent('Demande de devis Weekly · ' + d.bde) +
+      '?subject=' + encodeURIComponent('Demande de devis Weekly · ' + d.bde + ' (' + d.etudiants + ' étudiants)') +
       '&body=' + encodeURIComponent(lines.join('\n'));
   }
 
@@ -163,7 +265,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const consent = form.elements.consentement;
     document.getElementById('rgpd-err').textContent = consent.checked ? '' : 'Coche la case pour qu’on puisse te répondre.';
     if (!consent.checked && !first) first = consent;
-    if (first) { first.focus(); return; }
+    if (first) {
+      if (first === dHidden) { openPanel(true); } else first.focus();
+      return;
+    }
 
     // Anti-spam : champ piège rempli ou envoi en moins de 3 s -> robot, on ignore en silence.
     if (form.elements.website.value || Date.now() - startedAt < 3000) {
@@ -177,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const data = {};
     for (const [k, v] of new FormData(form)) {
-      if (k === 'website') continue;
+      if (k === 'website' || k === 'dates_precisions') continue;
       data[k] = String(v).trim().slice(0, 2000);
     }
     data.consentement = 'oui';
@@ -212,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (String(out.success) !== 'true') throw new Error(out.message || 'Envoi refusé');
       lastSent = Date.now();
       form.reset();
+      syncDates();
       try { sessionStorage.removeItem(DRAFT_KEY); } catch (_) {}
       show('ok', 'Demande envoyée, on te recontacte vite ! Tu auras une réponse sous 48h.');
     } catch (_) {

@@ -165,9 +165,23 @@
           <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" required maxlength="120" autocomplete="email" placeholder="ton.email@exemple.fr"><span class="err" aria-live="polite"></span></div>
           <div class="field"><label for="tel">Téléphone *</label><input id="tel" name="telephone" type="tel" required maxlength="20" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78"><span class="err" aria-live="polite"></span></div>
           <div class="field"><label for="nb">Nombre d'étudiants *</label><input id="nb" name="etudiants" type="number" required min="5" max="500" step="1" inputmode="numeric" placeholder="Ex : 42"><span class="err" aria-live="polite"></span></div>
-          <div class="field"><label for="dates">Dates *</label>
-            <span class="with-ico"><input id="dates" name="dates" required maxlength="60" placeholder="Souhaitées pour le weekend"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
-            <span class="err" aria-live="polite"></span></div>
+          <div class="field datefield" id="datefield"><label for="dates-btn" id="dates-label">Dates *</label>
+            <button type="button" class="date-btn" id="dates-btn" aria-haspopup="true" aria-expanded="false" aria-controls="dates-panel" aria-describedby="dates-err">
+              <span id="dates-summary" class="ph-txt">Choisis tes weekends</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </button>
+            <input type="hidden" id="dates" name="dates">
+            <div class="date-panel" id="dates-panel" role="group" aria-labelledby="dates-label" hidden>
+              <p class="dp-hint">Saison <span id="dp-year"></span> · du vendredi au dimanche. Tu peux en choisir plusieurs.</p>
+              <div id="dp-months"></div>
+              <label class="chip chip-other"><input type="checkbox" id="dp-other" value="autre"><span>Autre / on est flexibles</span></label>
+              <div class="dp-other-wrap" id="dp-other-wrap" hidden>
+                <label for="dates-autre" class="sr-only">Précise tes dates ou tes disponibilités</label>
+                <textarea id="dates-autre" name="dates_precisions" rows="2" maxlength="300" placeholder="Ex : un weekend fin juin, ou n'importe quand en juillet sauf le 14"></textarea>
+              </div>
+              <div class="dp-actions"><button type="button" class="dp-clear" id="dp-clear">Effacer</button><button type="button" class="dp-ok" id="dp-ok">Valider</button></div>
+            </div>
+            <span class="err" id="dates-err" aria-live="polite"></span></div>
           <div class="field"><label for="transport">Transport *</label>
             <select id="transport" name="transport" required><option value="">Besoin d'un bus privatisé ?</option><option>Oui</option><option>Non</option><option>À voir ensemble</option></select>
             <span class="err" aria-live="polite"></span></div>
