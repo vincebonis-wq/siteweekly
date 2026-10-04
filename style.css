@@ -74,7 +74,32 @@ button,input,select,textarea{font:inherit}
 /* HERO */
 .hero{position:relative;background:var(--plum);color:#fff;min-height:620px;overflow:hidden;isolation:isolate}
 .hero-img{position:absolute;top:0;right:0;bottom:0;width:66%;z-index:-2}
-.hero-img img{width:100%;height:100%;object-fit:cover}
+.hero-img{overflow:hidden}
+/* Cadre au ratio exact de la photo, dimensionné en "cover" : les effets restent calés sur le soleil */
+.hero-frame{position:absolute;top:50%;left:50%;translate:-50% -50%;aspect-ratio:670/698;min-width:100%;min-height:100%;transform-origin:62% 45%;animation:kenburns 26s ease-in-out infinite alternate;will-change:transform}
+.hero-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.09) translate(-1.2%,.8%)}}
+/* Halo du soleil qui respire */
+.sun-glow{position:absolute;left:90.4%;top:33%;width:30%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,rgba(255,236,190,.55) 0%,rgba(255,190,120,.22) 35%,rgba(255,170,110,0) 68%);mix-blend-mode:screen;animation:sunpulse 6s ease-in-out infinite;pointer-events:none}
+@keyframes sunpulse{0%,100%{opacity:.55;scale:1}50%{opacity:1;scale:1.12}}
+/* Miroitement du reflet sur l'eau : scintillements le long du reflet du soleil */
+.glint{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
+.glint::before{content:"";position:absolute;left:84%;top:38%;width:13%;height:38%;background:radial-gradient(ellipse 40% 50% at 50% 50%,rgba(255,214,150,.35),rgba(255,214,150,0) 70%);animation:shimmer 4s ease-in-out infinite}
+.glint i{position:absolute;translate:-50% -50%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,248,225,.95) 0%,rgba(255,220,160,.5) 40%,rgba(255,220,160,0) 72%);opacity:0;animation:twinkle 2.2s ease-in-out infinite}
+.glint i:nth-child(1){left:89.5%;top:42%;width:10px;height:4px;animation-duration:1.78s;animation-delay:-0.78s}
+.glint i:nth-child(2){left:91%;top:45.5%;width:14px;height:5px;animation-duration:2.24s;animation-delay:-0.17s}
+.glint i:nth-child(3){left:88%;top:49%;width:12px;height:5px;animation-duration:2.69s;animation-delay:-1.4s}
+.glint i:nth-child(4){left:92.5%;top:52%;width:10px;height:4px;animation-duration:2.12s;animation-delay:-0.09s}
+.glint i:nth-child(5){left:89%;top:56%;width:10px;height:4px;animation-duration:2.26s;animation-delay:-0.58s}
+.glint i:nth-child(6){left:91.5%;top:60%;width:12px;height:5px;animation-duration:1.75s;animation-delay:-1.98s}
+.glint i:nth-child(7){left:87.5%;top:63%;width:10px;height:4px;animation-duration:2.3s;animation-delay:-1.51s}
+.glint i:nth-child(8){left:90.5%;top:66.5%;width:12px;height:5px;animation-duration:2.08s;animation-delay:-1.39s}
+.glint i:nth-child(9){left:92%;top:70%;width:14px;height:5px;animation-duration:2.63s;animation-delay:-0.11s}
+.glint i:nth-child(10){left:88.5%;top:72.5%;width:14px;height:5px;animation-duration:2.25s;animation-delay:-1.01s}
+.glint i:nth-child(11){left:90%;top:58.5%;width:10px;height:4px;animation-duration:2.42s;animation-delay:-1.34s}
+.glint i:nth-child(12){left:93%;top:47%;width:14px;height:5px;animation-duration:2.37s;animation-delay:-1.4s}
+@keyframes twinkle{0%,100%{opacity:0;scale:.6}45%{opacity:1;scale:1.15}60%{opacity:.7;scale:1}}
+@keyframes shimmer{0%,100%{opacity:.6;transform:scaleX(1)}50%{opacity:1;transform:scaleX(1.25)}}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--plum) 0%,var(--plum) 34%,rgba(43,18,56,.82) 44%,rgba(43,18,56,.35) 56%,rgba(43,18,56,0) 68%)}
 .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;z-index:-1;background:linear-gradient(0deg,rgba(43,18,56,.55),rgba(43,18,56,0))}
 .hero-nav{display:flex;align-items:center;gap:40px;padding:26px var(--pad)}
